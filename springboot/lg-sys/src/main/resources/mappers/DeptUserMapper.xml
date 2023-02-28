@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lg.sys.mapper.DeptUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lg.sys.model.entity.DeptUser">
+        <id column="ID" property="id" />
+        <result column="DEPT_ID" property="deptId" />
+        <result column="USER_ID" property="userId" />
+        <result column="BIND_TIME" property="bindTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, DEPT_ID, USER_ID, BIND_TIME
+    </sql>
+
+</mapper>

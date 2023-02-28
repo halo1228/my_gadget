@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lg.sys.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lg.sys.model.entity.User">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="USER_CODE" property="userCode" />
+        <result column="SEX" property="sex" />
+        <result column="TEL" property="tel" />
+        <result column="BIRTHDAY" property="birthday" />
+        <result column="EMAIL" property="email" />
+        <result column="ADDRESS" property="address" />
+        <result column="AVATAR" property="avatar" />
+        <result column="STATUS" property="status" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATE_TIME" property="updateTime" />
+        <result column="DELETED" property="deleted" />
+        <result column="IDX" property="idx" />
+        <result column="ACCESS" property="access" />
+        <result column="PASSWORD" property="password" />
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" />
+        <result column="LOGIN_COUNT" property="loginCount" />
+        <result column="ACCESS_TYPE" property="accessType" />
+        <result column="IS_LOCK" property="isLock" />
+        <result column="LOCK_TIME" property="lockTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列  -->
+    <sql id="Base_Column_List">
+        ID, NAME, USER_CODE, SEX, TEL, BIRTHDAY, EMAIL, ADDRESS, AVATAR, STATUS, CREATE_TIME, UPDATE_TIME, DELETED, IDX,
+             ACCESS, PASSWORD, LAST_LOGIN_TIME, LOGIN_COUNT, ACCESS_TYPE,IS_LOCK, LOCK_TIME
+
+    </sql>
+    <!-- 用户分页关联用户组织表查询 deleted=0 -->
+    <select id="findByPage" resultMap="BaseResultMap" >
+        select sys_user.ID, sys_user.NAME, sys_user.USER_CODE, sys_user.SEX, sys_user.TEL, sys_user.BIRTHDAY,
+        sys_user.EMAIL, sys_user.ADDRESS, sys_user.AVATAR, sys_user.STATUS, sys_user.CREATE_TIME,
+        UPDATE_TIME, DELETED, IDX
+        from sys_user left join sys_dept_user on sys_user.ID=sys_dept_user.USER_ID
+        <where>
+            sys_user.DELETED=0
+            <if test="user.deptId != ''">
+                and sys_dept_user.DEPT_ID=#{user.deptId}
+            </if>
+        </where>
+    </select>
+
+</mapper>
