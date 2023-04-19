@@ -15,4 +15,12 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DeptUserMapper extends BaseMapper<DeptUser> {
 
+    String  findDeptUserByUserId(String userId);
+
+    /**
+     * 删除用户与所属组织绑定关系
+     * @param userId
+     * @return
+     */
+    int deleteByUserId(String userId);
 }

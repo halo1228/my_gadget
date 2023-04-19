@@ -7,17 +7,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author liuga
- * @date ${YEAR}/${MONTH}/${DAY} ${TIME}
+ * @since 2023-02-01
  * Description:
  */
 @SpringBootApplication
-//开启swagger
-@EnableSwagger2
-@EnableOpenApi
+
 //@MapperScan("com.lg.sys.mapper")
 public class AdminApplication {
     public static void main(String[] args) {
-        System.out.println("http://localhost:8080/doc.html");
+
+        //System.out.println("http://localhost:8080/doc.html");
         SpringApplication.run(AdminApplication.class, args);
     }
 }

@@ -2,13 +2,10 @@ package com.lg.controller.sys;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.lg.common.pojo.ApiResult;
+import com.lg.sys.model.dto.dept.DeptAddDTO;
+import com.lg.sys.model.dto.dept.DeptEditDTO;
 import com.lg.sys.model.entity.Dept;
-import com.lg.sys.model.entity.User;
-import com.lg.sys.model.param.dept.DeptAddParam;
-import com.lg.sys.model.param.dept.DeptEditParam;
-import com.lg.sys.model.param.dept.DeptPageParam;
-import com.lg.sys.model.param.user.UserAddParam;
-import com.lg.sys.model.param.user.UserPageParam;
+import com.lg.sys.model.dto.dept.DeptPageDTO;
 import com.lg.sys.service.DeptService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,21 +34,21 @@ public class DeptController {
 
     @PostMapping("page")
     @ApiOperation("获取用户列表-分页")
-    public ApiResult<?> getPage(@RequestBody DeptPageParam params) {
+    public ApiResult<?> getPage(@RequestBody DeptPageDTO params) {
         return ApiResult.data(deptService.getPage(params));
     }
 
     @PostMapping("add")
     @ApiOperation("添加组织")
-    public ApiResult<?> add(@RequestBody @Valid DeptAddParam deptAddParam) {
-        boolean save = deptService.add(deptAddParam);
+    public ApiResult<?> add(@RequestBody @Valid DeptAddDTO deptAddDto) {
+        boolean save = deptService.add(deptAddDto);
         return save ? ApiResult.ok() : ApiResult.error();
     }
 
     @PostMapping("update")
     @ApiOperation("添加组织")
-    public ApiResult<?> update(@RequestBody @Valid DeptEditParam deptEditParam) {
-        boolean save = deptService.updateById(deptEditParam);
+    public ApiResult<?> update(@RequestBody @Valid DeptEditDTO deptEditDto) {
+        boolean save = deptService.updateById(deptEditDto);
         return save ? ApiResult.ok() : ApiResult.error();
     }
 

@@ -144,7 +144,7 @@ public class ApiResult<T> implements Serializable {
     }
 
     // 构建指定状态码
-    public static <T> ApiResult<T> get(int code, String msg, T data) {
+    public static <T> ApiResult<T> code(int code, String msg, T data) {
         return new ApiResult<>(code, msg, data);
     }
 
@@ -160,15 +160,4 @@ public class ApiResult<T> implements Serializable {
                 + "}";
     }
 
-    /**
-     * 响应状态码集合
-     *
-     * @author xuyuxiang
-     * @date 2022/7/25 13:36
-     **/
-    public static List<ResponseMessage> responseList() {
-        return Arrays.stream(CommonExceptionEnum.values()).map(commonExceptionEnum -> new ResponseMessageBuilder()
-                        .code(commonExceptionEnum.getCode()).message(commonExceptionEnum.getMessage()).build())
-                .collect(Collectors.toList());
-    }
 }

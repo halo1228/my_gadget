@@ -1,10 +1,10 @@
 package com.lg.controller.sys;
 
 import com.lg.common.pojo.ApiResult;
-import com.lg.sys.model.entity.User;
-import com.lg.sys.model.param.user.UserAddParam;
-import com.lg.sys.model.param.user.UserEditParam;
-import com.lg.sys.model.param.user.UserPageParam;
+import com.lg.sys.model.dto.user.UserAddDTO;
+import com.lg.sys.model.dto.user.UserEditDTO;
+import com.lg.sys.model.dto.user.UserPageDTO;
+import com.lg.sys.model.vo.user.UserDetailVO;
 import com.lg.sys.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,47 +28,47 @@ public class UserController {
     @Resource
     UserService userService;
 
-
-    @GetMapping("list")
-    @ApiOperation("获取用户列表")
-    public ApiResult<?> getList() {
-        return ApiResult.data(userService.getList());
-    }
-
-
     @PostMapping("page")
     @ApiOperation("获取用户列表-分页")
-    public ApiResult<?> getPage(@RequestBody @Valid UserPageParam params) {
+    public ApiResult<?> getPage(@RequestBody @Valid UserPageDTO params) {
         return ApiResult.data(userService.getPage(params));
     }
 
     @PostMapping("add")
     @ApiOperation("添加用户")
-    public ApiResult<?> add(@RequestBody @Valid UserAddParam userAddParam) {
-        boolean save = userService.add(userAddParam);
-
+    public ApiResult<?> add(@RequestBody @Valid UserAddDTO userAddDto) {
+        boolean save = userService.add(userAddDto);
         return save ? ApiResult.ok() : ApiResult.error();
     }
 
     @PostMapping("update")
     @ApiOperation("根据用户ID编辑用户")
-    public ApiResult<?> update(@RequestBody @Valid UserEditParam userEditParam) {
-        boolean update = userService.updateById(userEditParam);
+    public ApiResult<?> update(@RequestBody @Valid UserEditDTO userEditDto) {
+        boolean update = userService.updateById(userEditDto);
         return update ? ApiResult.ok() : ApiResult.error();
     }
 
     @GetMapping("detail")
     @ApiOperation("根据用户ID获取编辑用户明细信息")
     public ApiResult<?> detail(@RequestParam String id) {
-        User user = userService.getById(id);
+        UserDetailVO user = userService.editInfo(id);
         return ApiResult.data(user);
     }
 
     @GetMapping("delete")
-    @ApiOperation("根据用户ID删除用户信息")
-    public ApiResult<?> delete(@RequestParam String id) {
-        boolean delete = userService.removeById(id,true);
+    @ApiOperation("根据用户ID删除（逻辑删除）用户信息（支持批量删除，ID用,隔开）")
+    public ApiResult<?> delete(@RequestParam String ids) {
+        boolean delete = userService.remove(ids, false);
         return delete ? ApiResult.ok() : ApiResult.error();
     }
+
+    @GetMapping("clear")
+    @ApiOperation("根据用户ID彻底清除（物理删除）用户信息（支持批量删除，ID用,隔开）")
+    public ApiResult<?> clear(@RequestParam String ids) {
+        boolean delete = userService.remove(ids, true);
+        return delete ? ApiResult.ok() : ApiResult.error();
+    }
+
+
 
 }

@@ -1,12 +1,14 @@
 package com.lg.sys.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lg.sys.model.dto.user.UserEditDTO;
+import com.lg.sys.model.dto.user.UserPassDTO;
 import com.lg.sys.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lg.sys.model.param.user.UserAddParam;
-import com.lg.sys.model.param.user.UserEditParam;
-import com.lg.sys.model.param.user.UserPageParam;
-import com.lg.sys.model.vo.user.UserVo;
+import com.lg.sys.model.dto.user.UserAddDTO;
+import com.lg.sys.model.dto.user.UserPageDTO;
+import com.lg.sys.model.vo.user.UserDetailVO;
+import com.lg.sys.model.vo.user.UserVO;
 
 import java.util.List;
 
@@ -20,37 +22,54 @@ import java.util.List;
  */
 public interface UserService extends IService<User> {
 
-    UserVo getInfoById(String id);
-
-    /**
-     * 获取用户list 不分页
-     *
-     * @return
-     */
-    List<User> getList();
 
     /**
      * 获取分页
      *
-     * @param userPageParam
+     * @param userPageDto
      * @return
      */
-    Page<User> getPage(UserPageParam userPageParam);
+    Page<UserVO> getPage(UserPageDTO userPageDto);
 
     /**
      * 根据id 修改信息
      *
-     * @param userEditParam
+     * @param userEditDto
      * @return
      */
-    boolean updateById(UserEditParam userEditParam);
+    boolean updateById(UserEditDTO userEditDto);
 
     /**
      * 添加一条数据
      *
-     * @param userAddParam
+     * @param userAddDto
      * @return
      */
-    boolean add(UserAddParam userAddParam);
+    boolean add(UserAddDTO userAddDto);
+
+    /**
+     * 根据id 获取编辑信息
+     *
+     * @param id
+     * @return
+     */
+    UserDetailVO editInfo(String id);
+
+    /**
+     * 删除
+     *
+     * @param ids   id
+     * @param isDel 是否彻底删除
+     * @return
+     */
+    boolean remove(String ids, boolean isDel);
+
+    /**
+     * 修改密码
+     *
+     * @param userPassDTO
+     * @return
+     */
+    boolean changePassword(UserPassDTO userPassDTO);
 
 }

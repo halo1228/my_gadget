@@ -27,17 +27,17 @@ public class SmCryptoUtil {
     /**
      * 公钥
      */
-    private static final String PUBLIC_KEY = "0468a0666f7242ceb7f5f89f1a4fc599bfed6f22266ad676c7c34fb77561e8b6c8446be55ff45100964b52bfeb38e093ebbedb25bcd1a6867fd64b408fd06cc42d";
+    public static final String PUBLIC_KEY = "0468a0666f7242ceb7f5f89f1a4fc599bfed6f22266ad676c7c34fb77561e8b6c8446be55ff45100964b52bfeb38e093ebbedb25bcd1a6867fd64b408fd06cc42d";
 
     /**
      * 私钥
      */
-    private static final String PRIVATE_KEY = "a872ddb635fc71b6327ad2f3c201c40341968ffb17d595394295469d4d08d1f7";
+    public static final String PRIVATE_KEY = "a872ddb635fc71b6327ad2f3c201c40341968ffb17d595394295469d4d08d1f7";
 
     /**
      * sm4 key 16 进制字符串，要求为 128 比特
      */
-    private static final String SM4_KEY = "cda9e23b7654a10feb89503c14f2d678";
+    public static final String SM4_KEY = "cda9e23b7654a10feb89503c14f2d678";
 
     /**
      * sm2 加密
@@ -57,10 +57,13 @@ public class SmCryptoUtil {
      * @return 解密结果
      */
     public static String sm2Decrypt(String encryptData) {
-        return Sm2.doDecrypt(encryptData, PUBLIC_KEY);
+        return Sm2.doDecrypt(encryptData, PRIVATE_KEY);
     }
 
 
+    public static String sm2Decrypt(String encryptData,String privateKey ) {
+        return Sm2.doDecrypt(encryptData, privateKey);
+    }
     /**
      * 签名验签  加密
      *
@@ -91,7 +94,6 @@ public class SmCryptoUtil {
      * @return 加密结果
      */
     public static String sm4Encrypt(String msg) {
-
         return Sm4.encrypt(msg, SM4_KEY);
     }
 
@@ -112,19 +114,19 @@ public class SmCryptoUtil {
      *
      * @return sm2密钥对 map
      */
-    public Map<String, String> getSm2KeyPair() {
+    public static Map<String, Object> getSm2KeyPair() {
         Keypair keypair = Sm2.generateKeyPairHex();
         // 公钥
         String privateKey = keypair.getPrivateKey();
         // 私钥
         String publicKey = keypair.getPublicKey();
-        Map<String, String> res = new HashMap<>();
+        Map<String, Object> res = new HashMap<>();
         res.put("privateKey", privateKey);
         res.put("publicKey", publicKey);
         return res;
     }
 
     public static void main(String[] args) {
-        System.out.println(sm4Encrypt("1234567"));
+
     }
 }

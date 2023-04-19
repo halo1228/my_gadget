@@ -104,7 +104,7 @@ public class User extends Model<User> {
     private Date updateTime;
 
     /**
-     * 删除状态
+     * 删除状态 （0:正常，1:删除）
      */
     @TableField(value ="DELETED", fill = FieldFill.INSERT)
     @TableLogic

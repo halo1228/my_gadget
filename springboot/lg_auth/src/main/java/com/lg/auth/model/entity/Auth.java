@@ -9,12 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author liuga
- * @since 2023-02-24 11:34
- * Description:
- */
-
-/**
  * <p>
  *
  * </p>
@@ -29,7 +23,6 @@ import java.util.Date;
 public class Auth extends Model<Auth> {
 
     private static final long serialVersionUID = 1L;
-
     /**
      * id
      */

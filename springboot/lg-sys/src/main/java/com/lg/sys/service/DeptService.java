@@ -2,13 +2,11 @@ package com.lg.sys.service;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lg.sys.model.dto.dept.DeptEditDTO;
 import com.lg.sys.model.entity.Dept;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lg.sys.model.entity.User;
-import com.lg.sys.model.param.dept.DeptAddParam;
-import com.lg.sys.model.param.dept.DeptEditParam;
-import com.lg.sys.model.param.dept.DeptPageParam;
-import com.lg.sys.model.param.user.UserPageParam;
+import com.lg.sys.model.dto.dept.DeptAddDTO;
+import com.lg.sys.model.dto.dept.DeptPageDTO;
 
 import java.util.List;
 
@@ -25,21 +23,21 @@ public interface DeptService extends IService<Dept> {
     /**
      * 获取分页
      *
-     * @param deptPageParam
+     * @param deptPageDto
      * @return
      */
-    Page<Dept> getPage(DeptPageParam deptPageParam);
+    Page<Dept> getPage(DeptPageDTO deptPageDto);
 
     /**
      * 添加
      *
-     * @param deptAddParam
+     * @param deptAddDto
      * @return
      */
-    boolean add(DeptAddParam deptAddParam);
+    boolean add(DeptAddDTO deptAddDto);
 
 
-    boolean updateById(DeptEditParam deptEditParam);
+    boolean updateById(DeptEditDTO deptEditDto);
     /**
      * 树查询 懒加载
      *

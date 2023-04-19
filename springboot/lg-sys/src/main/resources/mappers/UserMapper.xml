@@ -3,41 +3,52 @@
 <mapper namespace="com.lg.sys.mapper.UserMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.lg.sys.model.entity.User">
-        <id column="ID" property="id" />
-        <result column="NAME" property="name" />
-        <result column="USER_CODE" property="userCode" />
-        <result column="SEX" property="sex" />
-        <result column="TEL" property="tel" />
-        <result column="BIRTHDAY" property="birthday" />
-        <result column="EMAIL" property="email" />
-        <result column="ADDRESS" property="address" />
-        <result column="AVATAR" property="avatar" />
-        <result column="STATUS" property="status" />
-        <result column="CREATE_TIME" property="createTime" />
-        <result column="UPDATE_TIME" property="updateTime" />
-        <result column="DELETED" property="deleted" />
-        <result column="IDX" property="idx" />
-        <result column="ACCESS" property="access" />
-        <result column="PASSWORD" property="password" />
-        <result column="LAST_LOGIN_TIME" property="lastLoginTime" />
-        <result column="LOGIN_COUNT" property="loginCount" />
-        <result column="ACCESS_TYPE" property="accessType" />
-        <result column="IS_LOCK" property="isLock" />
-        <result column="LOCK_TIME" property="lockTime" />
+    <resultMap id="PageResultMap" type="com.lg.sys.model.vo.user.UserVO">
+        <id column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="USER_CODE" property="userCode"/>
+        <result column="SEX" property="sex"/>
+        <result column="TEL" property="tel"/>
+        <result column="BIRTHDAY" property="birthday"/>
+        <result column="EMAIL" property="email"/>
+        <result column="ADDRESS" property="address"/>
+        <result column="AVATAR" property="avatar"/>
+        <result column="STATUS" property="status"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="DELETED" property="deleted"/>
+        <result column="IDX" property="idx"/>
+        <result column="ACCESS" property="access"/>
+        <result column="IS_LOCK" property="isLock"/>
+        <result column="LOCK_TIME" property="lockTime"/>
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime"/>
+        <result column="LOGIN_COUNT" property="loginCount"/>
+        <result column="ACCESS_TYPE" property="accessType"/>
     </resultMap>
 
-    <!-- 通用查询结果列  -->
-    <sql id="Base_Column_List">
-        ID, NAME, USER_CODE, SEX, TEL, BIRTHDAY, EMAIL, ADDRESS, AVATAR, STATUS, CREATE_TIME, UPDATE_TIME, DELETED, IDX,
-             ACCESS, PASSWORD, LAST_LOGIN_TIME, LOGIN_COUNT, ACCESS_TYPE,IS_LOCK, LOCK_TIME
-
-    </sql>
     <!-- 用户分页关联用户组织表查询 deleted=0 -->
-    <select id="findByPage" resultMap="BaseResultMap" >
-        select sys_user.ID, sys_user.NAME, sys_user.USER_CODE, sys_user.SEX, sys_user.TEL, sys_user.BIRTHDAY,
-        sys_user.EMAIL, sys_user.ADDRESS, sys_user.AVATAR, sys_user.STATUS, sys_user.CREATE_TIME,
-        UPDATE_TIME, DELETED, IDX
+    <select id="findByPage" resultMap="PageResultMap" parameterType="com.lg.sys.model.dto.user.UserPageDTO">
+        select sys_user.ID,
+        sys_user.NAME,
+        sys_user.USER_CODE,
+        sys_user.SEX,
+        sys_user.TEL,
+        sys_user.BIRTHDAY,
+        sys_user.EMAIL,
+        sys_user.ADDRESS,
+        sys_user.AVATAR,
+        sys_user.STATUS,
+        sys_user.CREATE_TIME,
+        sys_user.UPDATE_TIME,
+        sys_user.DELETED,
+        sys_user.IDX,
+        sys_user.ACCESS,
+        sys_user.IS_LOCK ,
+        sys_user.LOCK_TIME ,
+        sys_user.LAST_LOGIN_TIME ,
+        sys_user.LOGIN_COUNT ,
+        sys_user.ACCESS_TYPE
         from sys_user left join sys_dept_user on sys_user.ID=sys_dept_user.USER_ID
         <where>
             sys_user.DELETED=0
@@ -47,4 +58,64 @@
         </where>
     </select>
 
+
+    <resultMap id="findEditDataByIdMap" type="com.lg.sys.model.vo.user.UserDetailVO">
+        <id column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="USER_CODE" property="userCode"/>
+        <result column="SEX" property="sex"/>
+        <result column="TEL" property="tel"/>
+        <result column="BIRTHDAY" property="birthday"/>
+        <result column="EMAIL" property="email"/>
+        <result column="ADDRESS" property="address"/>
+        <result column="AVATAR" property="avatar"/>
+        <result column="STATUS" property="status"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="IDX" property="idx"/>
+        <result column="DEPT_ID" property="deptId"/>
+        <result column="DEPT_NAME" property="deptName"/>
+    </resultMap>
+
+
+    <resultMap id="findAccessDataByIdMap" type="com.lg.sys.model.entity.User">
+        <id column="ID" property="id"/>
+        <result column="ACCESS" property="access"/>
+        <result column="PASSWORD" property="password"/>
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime"/>
+        <result column="LOGIN_COUNT" property="loginCount"/>
+        <result column="ACCESS_TYPE" property="accessType"/>
+        <result column="IS_LOCK" property="isLock"/>
+        <result column="LOCK_TIME" property="lockTime"/>
+    </resultMap>
+
+    <select id="findEditDataById" resultMap="findEditDataByIdMap">
+        select sys_user.ID,
+        sys_user.NAME,
+        sys_user.USER_CODE,
+        sys_user.SEX,
+        sys_user.TEL,
+        sys_user.BIRTHDAY,
+        sys_user.EMAIL,
+        sys_user.ADDRESS,
+        sys_user.AVATAR,
+        sys_user.STATUS,
+        sys_user.DESCRIPTION,
+        sys_user.CREATE_TIME,
+        sys_user.UPDATE_TIME,
+        sys_user.DELETED,
+        sys_user.IDX,
+        sys_dept.ID as DEPT_ID,
+        sys_dept.DEPT_NAME
+        from sys_user
+        left join sys_dept_user on sys_user.ID = sys_dept_user.USER_ID
+        left join sys_dept on sys_dept_user.DEPT_ID = sys_dept.ID
+        <where>
+            sys_user.ID = #{id}
+            <if test="bindType!='' and bindType!=null">
+                and sys_dept_user.BIND_TYPE = #{bindType}
+            </if>
+        </where>
+    </select>
 </mapper>

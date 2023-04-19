@@ -3,18 +3,15 @@ package com.lg.sys.service.impl;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
-import cn.hutool.core.map.MapUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lg.common.utils.PageUtil;
 import com.lg.sys.model.converter.DeptConverter;
+import com.lg.sys.model.dto.dept.DeptAddDTO;
+import com.lg.sys.model.dto.dept.DeptEditDTO;
 import com.lg.sys.model.entity.Dept;
 import com.lg.sys.mapper.DeptMapper;
-import com.lg.sys.model.param.dept.DeptAddParam;
-import com.lg.sys.model.param.dept.DeptEditParam;
-import com.lg.sys.model.param.dept.DeptPageParam;
+import com.lg.sys.model.dto.dept.DeptPageDTO;
 import com.lg.sys.service.DeptService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -35,19 +32,19 @@ import java.util.stream.Collectors;
 public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements DeptService {
 
     @Override
-    public Page<Dept> getPage(DeptPageParam deptPageParam) {
+    public Page<Dept> getPage(DeptPageDTO deptPageDto) {
         LambdaQueryWrapper<Dept> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper
-                .likeRight(StringUtils.isNotBlank(deptPageParam.getDeptName()), Dept::getDeptName, deptPageParam.getDeptName())
-                .eq(StringUtils.isNotBlank(deptPageParam.getParentId()), Dept::getParentId, deptPageParam.getParentId())/*
+                .likeRight(StringUtils.isNotBlank(deptPageDto.getDeptName()), Dept::getDeptName, deptPageDto.getDeptName())
+                .eq(StringUtils.isNotBlank(deptPageDto.getParentId()), Dept::getParentId, deptPageDto.getParentId())
                 .or()
-                .eq(StringUtils.isNotBlank(deptPageParam.getParentId()), Dept::getId, deptPageParam.getParentId())*/;
-        return page(PageUtil.defaultPage(deptPageParam.getSize(), deptPageParam.getCurrent()), queryWrapper);
+                .eq(StringUtils.isNotBlank(deptPageDto.getParentId()), Dept::getId, deptPageDto.getParentId());
+        return page(PageUtil.defaultPage(deptPageDto.getSize(), deptPageDto.getCurrent()), queryWrapper);
     }
 
     @Override
-    public boolean add(DeptAddParam deptAddParam) {
-        Dept dept = DeptConverter.INSTANCE.deptAddParam2Dept(deptAddParam);
+    public boolean add(DeptAddDTO deptAddDto) {
+        Dept dept = DeptConverter.INSTANCE.deptAddDTO2Dept(deptAddDto);
         if (StringUtils.isBlank(dept.getParentId())) {
             //默认顶级组织id为0
             dept.setParentId("0");
@@ -56,8 +53,8 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     }
 
     @Override
-    public boolean updateById(DeptEditParam deptEditParam) {
-        Dept dept = DeptConverter.INSTANCE.deptEditParam2Dept(deptEditParam);
+    public boolean updateById(DeptEditDTO deptEditDto) {
+        Dept dept = DeptConverter.INSTANCE.deptEditDTO2Dept(deptEditDto);
         return updateById(dept);
     }
 

@@ -1,10 +1,10 @@
 package com.lg.sys.model.converter;
 
+import com.lg.sys.model.dto.user.UserAddDTO;
+import com.lg.sys.model.dto.user.UserEditDTO;
+import com.lg.sys.model.dto.user.UserPageDTO;
 import com.lg.sys.model.entity.User;
-import com.lg.sys.model.param.user.UserAddParam;
-import com.lg.sys.model.param.user.UserEditParam;
-import com.lg.sys.model.param.user.UserPageParam;
-import com.lg.sys.model.vo.user.UserVo;
+import com.lg.sys.model.vo.user.UserVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -41,15 +41,15 @@ public interface UserConverter {
             @Mapping(source = "description", target = "description"),
             @Mapping(source = "idx", target = "idx")
     })
-    User userAddParam2User(UserAddParam userAddParam);
+    User userAddDTO2User(UserAddDTO userAddDto);
 
     /**
      * 编辑参数 转换 po
      */
-    User userEditParam2User(UserEditParam userEditParam);
+    User userEditDTO2User(UserEditDTO userEditDto);
 
-    User userPageParam2User(UserPageParam userPageParam);
+    User userPageDTO2User(UserPageDTO userPageDto);
 
 
-    UserVo user2UserVo(User user);
+    UserVO user2UserVO(User user);
 }

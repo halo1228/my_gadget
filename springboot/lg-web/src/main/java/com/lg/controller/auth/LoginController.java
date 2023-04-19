@@ -2,7 +2,7 @@ package com.lg.controller.auth;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import com.lg.auth.model.param.LoginParam;
+import com.lg.auth.model.dto.LoginDTO;
 import com.lg.auth.service.AuthService;
 import com.lg.common.pojo.ApiResult;
 import io.swagger.annotations.Api;
@@ -33,8 +33,8 @@ public class LoginController {
     @PostMapping("doLogin")
     @ApiOperation("登录")
     @ResponseBody
-    public ApiResult<?> doLogin(@RequestBody @Valid LoginParam loginParam) {
-        SaTokenInfo token = authService.login(loginParam);
+    public ApiResult<?> doLogin(@RequestBody @Valid LoginDTO loginDTO) {
+        SaTokenInfo token = authService.login(loginDTO);
         if (token.getIsLogin()) {
             return ApiResult.data(token);
         }

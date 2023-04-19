@@ -1,6 +1,7 @@
 package com.lg.filter;
 
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.io.IOException;
  */
 @Component
 @Order(1)
-@Log
+@Slf4j
 public class CROSFilter implements Filter {
 
     @Override

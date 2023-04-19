@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
  * @AfterReturning 在方法执行后返回一个结果后执行
  * @AfterThrowing 在方法执行过程中抛出异常的时候执行
  * @Around 环绕通知，就是可以在执行前后都使用，这个方法参数必须为ProceedingJoinPoint，proceed()方法就是被切面的方法，上面四个方法可以使用JoinPoint，JoinPoint包含了类名，被切面的方法名，参数等信息。
-
  */
 
 @Aspect
@@ -28,7 +27,6 @@ public class LogAspect {
 
     @Before("logAspect()")
     public void doBefore(JoinPoint joinPoint){
-
         System.out.println("doBefore");
     }
 

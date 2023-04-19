@@ -2,8 +2,10 @@ package com.lg.sys.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lg.sys.model.dto.user.UserPageDTO;
 import com.lg.sys.model.entity.User;
-import com.lg.sys.model.param.user.UserPageParam;
+import com.lg.sys.model.vo.user.UserDetailVO;
+import com.lg.sys.model.vo.user.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,6 +21,8 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper extends BaseMapper<User> {
 
 
-    Page<User> findByPage(Page<User> page, @Param("user") UserPageParam user);
+    Page<UserVO> findByPage(Page<User> page, @Param("user") UserPageDTO user);
+
+    UserDetailVO findEditDataById(@Param("id") String id, @Param("bindType") Integer bindType);
 
 }

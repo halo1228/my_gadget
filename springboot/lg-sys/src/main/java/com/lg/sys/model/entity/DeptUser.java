@@ -39,6 +39,9 @@ public class DeptUser extends Model<DeptUser> {
     @TableField(value = "BIND_TIME", fill = FieldFill.INSERT)
     private Date bindTime;
 
+    @TableField(value = "BIND_TYPE")
+    private Integer bindType;
+
 
     public static final String ID = "ID";
 
@@ -47,6 +50,7 @@ public class DeptUser extends Model<DeptUser> {
     public static final String USER_ID = "USER_ID";
 
     public static final String BIND_TIME = "BIND_TIME";
+    public static final String BIND_TYPE = "BIND_TYPE";
 
     @Override
     public Serializable pkVal() {

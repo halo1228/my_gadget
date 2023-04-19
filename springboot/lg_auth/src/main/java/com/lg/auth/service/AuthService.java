@@ -3,7 +3,8 @@ package com.lg.auth.service;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lg.auth.model.entity.Auth;
-import com.lg.auth.model.param.LoginParam;
+import com.lg.auth.model.dto.LoginDTO;
+import com.lg.auth.model.vo.AuthVo;
 
 /**
  * <p>
@@ -15,6 +16,19 @@ import com.lg.auth.model.param.LoginParam;
  */
 public interface AuthService extends IService<Auth> {
 
+    /**
+     * 登录
+     *
+     * @param loginDTO
+     * @return
+     */
+    SaTokenInfo login(LoginDTO loginDTO);
 
-    SaTokenInfo login(LoginParam loginParam);
+    /**
+     * 获取用户信息
+     *
+     * @param id
+     * @return
+     */
+    AuthVo getInfoById(String id);
 }

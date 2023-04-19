@@ -7,11 +7,14 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lg.auth.mapper.AuthMapper;
 import com.lg.auth.model.entity.Auth;
-import com.lg.auth.model.param.LoginParam;
+import com.lg.auth.model.dto.LoginDTO;
+import com.lg.auth.model.vo.AuthVo;
 import com.lg.auth.service.AuthService;
 import com.lg.common.exception.CommonException;
 import com.lg.common.utils.SmCryptoUtil;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -24,13 +27,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements AuthService {
 
+    @Resource
+    AuthMapper authMapper;
 
     @Override
-    public SaTokenInfo login(LoginParam loginParam) {
+    public SaTokenInfo login(LoginDTO loginDTO) {
         LambdaQueryWrapper<Auth> wrapper = new LambdaQueryWrapper<>();
         //根据账号 查询当前用户信息
         wrapper.select(Auth::getId, Auth::getAccess, Auth::getPassword, Auth::getIsLock, Auth::getStatus);
-        wrapper.eq(Auth::getAccess, loginParam.getUsername());
+        wrapper.eq(Auth::getAccess, loginDTO.getUsername());
         Auth one = getOne(wrapper);
         //判断用户是否存在
         if (ObjectUtils.isEmpty(one)) {
@@ -40,11 +45,22 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
             throw new CommonException("账号被锁定或已停用！");
         }
         //校验密码
-        if (!SmCryptoUtil.sm4Encrypt(loginParam.getPassword()).equals(one.getPassword())) {
+        if (!SmCryptoUtil.sm4Encrypt(loginDTO.getPassword()).equals(one.getPassword())) {
             throw new CommonException("密码不正确！");
         }
         //登录
         StpUtil.login(one.getId());
         return StpUtil.getTokenInfo();
+    }
+
+
+    @Override
+    public AuthVo getInfoById(String id) {
+
+        /*
+         * 2，获取用户角色、权限数据
+         * 3、获取用户菜单数据 动态路由
+         */
+        return authMapper.getUserInfo(id);
     }
 }

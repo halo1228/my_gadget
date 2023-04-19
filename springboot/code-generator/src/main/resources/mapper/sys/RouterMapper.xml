@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lg.sys.mapper.RouterMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lg.sys.entity.Router">
+        <id column="ID" property="id" />
+        <result column="LABEL" property="label" />
+        <result column="NAME" property="name" />
+        <result column="PATH" property="path" />
+        <result column="COMPONENT" property="component" />
+        <result column="REDIRECT" property="redirect" />
+        <result column="HIDDEN" property="hidden" />
+        <result column="ALWAYS_SHOW" property="alwaysShow" />
+        <result column="TITLE" property="title" />
+        <result column="ICON" property="icon" />
+        <result column="KEEP_ALIVE" property="keepAlive" />
+        <result column="BREADCRUMB" property="breadcrumb" />
+        <result column="AFFIX" property="affix" />
+        <result column="ACTIVE_MENU" property="activeMenu" />
+        <result column="PARENT_ID" property="parentId" />
+        <result column="MENU_TYPE" property="menuType" />
+        <result column="DESCRIPTION" property="description" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="IDX" property="idx" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, LABEL, NAME, PATH, COMPONENT, REDIRECT, HIDDEN, ALWAYS_SHOW, TITLE, ICON, KEEP_ALIVE, BREADCRUMB, AFFIX, ACTIVE_MENU, PARENT_ID, MENU_TYPE, DESCRIPTION, CREATE_TIME, IDX
+    </sql>
+
+</mapper>

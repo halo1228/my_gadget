@@ -14,5 +14,15 @@
     <sql id="Base_Column_List">
         ID, DEPT_ID, USER_ID, BIND_TIME
     </sql>
+    <select id="findDeptUserByUserId" resultType="string">
+        select ID
+        from sys_dept_user
+        where USER_ID = #{userId}
+          and BIND_TYPE = 1
+    </select>
+
+    <delete id="deleteByUserId" >
+        delete from sys_dept_user where USER_ID =#{user_id} and BIND_TYPE = 1
+    </delete>
 
 </mapper>

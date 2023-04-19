@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface DeptUserService extends IService<DeptUser> {
 
+    boolean updateBind(DeptUser deptUser);
+
 }
