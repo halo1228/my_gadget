@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lg.auth.model.entity.Auth;
 import com.lg.auth.model.dto.LoginDTO;
 import com.lg.auth.model.vo.AuthVo;
+import com.lg.auth.model.vo.ValidCodeVO;
+import com.lg.common.pojo.ApiResult;
+import com.sun.org.apache.bcel.internal.generic.PUSH;
 
 /**
  * <p>
@@ -31,4 +34,11 @@ public interface AuthService extends IService<Auth> {
      * @return
      */
     AuthVo getInfoById(String id);
+
+    /**
+     * 创建验证码
+     *
+     * @return
+     */
+    public ValidCodeVO createValidCode();
 }

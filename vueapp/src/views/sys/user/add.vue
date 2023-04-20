@@ -85,12 +85,12 @@
 </template>
 
 <script>
-import {Detail, SubmitForm} from '@/api/sys/user'
-import {getPubKey} from "@/api/auth/user"
+import {SubmitForm} from '@/api/sys/user'
 import {validPassWord} from "@/utils/validate"
-import {sm2} from "sm-crypto"
 import DeptTreeSelect from '@/views/sys/dept/components/deptTreeSelect.vue'
 import Bus from '@/bus'
+import smCrypto from "@/utils/smCrypto";
+import Lodash from "@/utils/lodash";
 
 export default {
     name: 'Add',
@@ -172,36 +172,24 @@ export default {
             this.$refs.ruleForm.validate((valid) => {
                 if (valid) {
                     this.loading = true;
-                    getPubKey().then(
+                    let doEncrypt = smCrypto.doSm2Encrypt(this.ruleForm.password);
+                    //深拷贝
+                    let params = Lodash.copyObj(this.ruleForm)
+                    params.password = doEncrypt;
+                    params.checkPass = doEncrypt;
+                    SubmitForm(params, true).then(
                         response => {
-                            console.log(response.data)
-                            let doEncrypt = sm2.doEncrypt(this.ruleForm.password, response.data);
-                            let params = {};
-                            params = this.ruleForm;
-                            params.password = doEncrypt;
-                            params.checkPass = doEncrypt;
-                            SubmitForm(params, true).then(
-                                response => {
-                                    this.$message({
-                                        message: response.msg,
-                                        type: 'success'
-                                    })
-                                    // 刷新父页面数据
-                                    this.$emit('refreshData')
-                                    // 关闭抽屉
-                                    Bus.$emit('closeDefaultDrawer')
-                                }
-                            ).finally(() => {
-                                this.loading = false
+                            this.$message({
+                                message: response.msg,
+                                type: 'success'
                             })
-
+                            // 刷新父页面数据
+                            this.$emit('refreshData')
+                            // 关闭抽屉
+                            Bus.$emit('closeDefaultDrawer')
                         }
-                    ).catch(() => {
-                        this.loading = false;
-                        this.$message({
-                            message: '网络异常，稍后重试',
-                            type: 'success'
-                        })
+                    ).finally(() => {
+                        this.loading = false
                     })
                 } else {
                     return false

@@ -78,9 +78,6 @@
 
 <script>
 import {Detail, SubmitForm} from '@/api/sys/user'
-import {getPubKey} from "@/api/auth/user"
-import {validPassWord} from "@/utils/validate"
-import {sm2} from "sm-crypto"
 import DeptTreeSelect from '@/views/sys/dept/components/deptTreeSelect.vue'
 import Bus from '@/bus'
 

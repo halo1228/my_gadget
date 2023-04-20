@@ -19,6 +19,7 @@
     "core-js": "3.6.5",
     "element-ui": "2.15.13",
     "js-cookie": "2.2.0",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",

@@ -35,8 +35,7 @@ public class AuthController {
 
     @Resource
     AuthService authService;
-    @Resource
-    RedisUtil redisUtil;
+
 
 
     /**
@@ -57,18 +56,5 @@ public class AuthController {
         //先根据token 获取对应的用户id
         Object loginIdByToken = StpUtil.getLoginIdByToken(token);
         return ApiResult.data(authService.getInfoById((String) loginIdByToken));
-    }
-    @GetMapping("getPubKey")
-    @ApiOperation("获取系统加密公钥 publicKey")
-    public ApiResult<?> getPubKey() {
-        //这是一个密钥对 将这个密钥对存储到redis中
-        Map<Object, Object> sm2KeyPair = redisUtil.hmget("auth:sm2KeyPair");
-        String pubKey= (String) sm2KeyPair.get("publicKey");
-        if(StringUtils.isBlank(pubKey)){
-            Map<String, Object>  sm2KeyPair2 = SmCryptoUtil.getSm2KeyPair();
-            redisUtil.hmset("auth:sm2KeyPair",sm2KeyPair2,60*60);
-            pubKey= (String) sm2KeyPair2.get("publicKey");
-        }
-        return ApiResult.data(pubKey);
     }
 }

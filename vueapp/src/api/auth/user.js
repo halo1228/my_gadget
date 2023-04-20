@@ -30,11 +30,9 @@ export function getAuthMenu(token) {
     params: { token }
   })
 }
-
-export function getPubKey() {
+export  function  getValidCode() {
   return request({
-    url: '/auth/getPubKey',
-    method: 'get'
+    url: '/code/validCode',
+    method: 'get',
   })
 }
-

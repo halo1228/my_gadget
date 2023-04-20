@@ -4,6 +4,7 @@ import com.antherd.smcrypto.sm2.Keypair;
 import com.antherd.smcrypto.sm2.Point;
 import com.antherd.smcrypto.sm2.SignatureOptions;
 import com.antherd.smcrypto.sm2.Sm2;
+import com.antherd.smcrypto.sm3.Sm3;
 import com.antherd.smcrypto.sm4.Sm4;
 
 import java.util.*;
@@ -109,6 +110,9 @@ public class SmCryptoUtil {
     }
 
 
+    public static String doHashValue(String str) {
+        return Sm3.sm3(str);
+    }
     /**
      * 生成一对sm2 密钥对
      *
@@ -127,6 +131,7 @@ public class SmCryptoUtil {
     }
 
     public static void main(String[] args) {
-
+        String s = doHashValue("1234567");
+        System.out.println(s);
     }
 }

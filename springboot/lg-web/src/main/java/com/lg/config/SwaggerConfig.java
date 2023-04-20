@@ -44,7 +44,7 @@ import java.util.List;
 @Slf4j
 @EnableSwagger2
 @EnableOpenApi
-public class SpringFoxSwaggerConfig implements ApplicationListener<WebServerInitializedEvent> {
+public class SwaggerConfig implements ApplicationListener<WebServerInitializedEvent> {
     @Value("${swagger.enabled}")
     private boolean enable;
     @Override

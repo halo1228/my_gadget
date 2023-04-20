@@ -1,13 +1,12 @@
 package com.lg.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lg.common.cache.RedisUtil;
 import com.lg.common.exception.CommonException;
 import com.lg.common.utils.PageUtil;
 import com.lg.common.utils.SmCryptoUtil;
+import com.lg.sys.enums.UserExceptionEnum;
 import com.lg.sys.mapper.UserMapper;
 import com.lg.sys.model.converter.UserConverter;
 import com.lg.sys.model.dto.user.UserAddDTO;
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -45,8 +43,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Resource
     private DeptUserService deptUserService;
 
-    @Resource
-    RedisUtil redisUtil;
 
     @Override
     public Page<UserVO> getPage(UserPageDTO userPageDto) {
@@ -61,7 +57,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (update) {
             //绑定组织用户关联表
             DeptUser build = DeptUser.builder().userId(user.getId()).deptId(userEditDto.getDeptId()).bindType(1).build();
-            deptUserService.updateBind(build);
+            boolean b = deptUserService.updateBind(build);
+            if (!b) {
+                throw new CommonException();
+            }
         }
         return update;
     }
@@ -69,21 +68,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean add(UserAddDTO userAddDto) {
-        boolean save;
-        Map<Object, Object> sm2KeyPair = redisUtil.hmget("auth:sm2KeyPair");
-        String privateKey = (String) sm2KeyPair.get("privateKey");
-        if (StringUtils.isNotBlank(privateKey)) {
-            User user = UserConverter.INSTANCE.userAddDTO2User(userAddDto);
-            String s = SmCryptoUtil.sm2Decrypt(user.getPassword(), privateKey);
-            String s1 = SmCryptoUtil.sm4Encrypt(s);
-            user.setPassword(s1);
-            save = save(user);
-            if (save) {
-                //绑定组织用户关联表
-                deptUserService.save(DeptUser.builder().userId(user.getId()).deptId(userAddDto.getDeptId()).build());
-            }
-        } else {
-            throw new CommonException();
+        User user = UserConverter.INSTANCE.userAddDTO2User(userAddDto);
+        //先判断账号是否存在
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getAccess, user.getAccess());
+        long count = this.count(queryWrapper);
+        if (count > 0) {
+            throw new CommonException(UserExceptionEnum.ACCOUNT_REPEAT.getValue());
+        }
+        //加解密密码
+        String pwd;
+        try {
+            pwd = SmCryptoUtil.doHashValue(SmCryptoUtil.sm2Decrypt(userAddDto.getPassword()));
+        } catch (Exception e) {
+            throw new CommonException(UserExceptionEnum.PWD_DECRYPT_ERROR.getValue());
+        }
+        user.setPassword(pwd);
+        //存储
+        boolean save = save(user);
+        if (save) {
+            //绑定组织用户关联表
+            deptUserService.save(DeptUser.builder().userId(user.getId()).deptId(userAddDto.getDeptId()).build());
         }
         return save;
     }
@@ -108,12 +113,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
 
-
     @Override
     public boolean changePassword(UserPassDTO userPassDTO) {
         return false;
     }
-
 
     private boolean validatePass(String id, String newPass) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>();

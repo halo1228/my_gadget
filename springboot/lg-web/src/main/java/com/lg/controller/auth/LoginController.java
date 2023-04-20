@@ -8,6 +8,7 @@ import com.lg.common.pojo.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/login")
 @Api(tags = "用户登录相关接口")
-@Log
+@Slf4j
 public class LoginController {
 
     @Resource

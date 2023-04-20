@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * @author liuga
- * @date 2023/01/14 11:48
+ * @since 2023/01/14 11:48
  * Description: 注册 Sa-Token 拦截器，打开注解式鉴权功能
  */
 @Configuration
@@ -25,8 +25,9 @@ public class SaTokenConfigure implements WebMvcConfigurer {
         // 注册 Sa-Token 拦截器，打开注解式鉴权功能
         registry.addInterceptor(new SaInterceptor(e -> StpUtil.checkLogin()))
                 .addPathPatterns("/**")
-                //不需要拦截的地址 swagger
+                //不需要拦截的地址 login  swagger
                 .excludePathPatterns("/login/doLogin")
+                .excludePathPatterns("/code/validCode")
                 .excludePathPatterns("/doc.html/**")
                 .excludePathPatterns("/swagger-resources/**")
                 .excludePathPatterns("/webjars/**")

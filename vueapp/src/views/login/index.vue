@@ -42,6 +42,19 @@
         </span>
             </el-form-item>
 
+            <el-form-item prop="validCode">
+                  <span class="svg-container">
+                    <svg-icon icon-class="captcha"/>
+                  </span>
+                <el-input style="width: 50%"
+                          ref="validCode"
+                          v-model="loginForm.validCode"
+                          name="validCode">
+
+                </el-input>
+                <img :src="validCodeBase64" class="validCode-img" @click="refreshCode"/>
+            </el-form-item>
+
             <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"
                        @click.native.prevent="handleLogin">Login
             </el-button>
@@ -56,6 +69,10 @@
 
 <script>
 import {validUsername} from '@/utils/validate'
+import smCrypto from '@/utils/smCrypto'
+import {getValidCode} from "@/api/auth/user";
+import Lodash from "@/utils/lodash";
+
 export default {
     name: 'Login',
     data() {
@@ -74,13 +91,17 @@ export default {
             }
         }
         return {
+            validCodeBase64: '',
             loginForm: {
                 username: 'admin',
-                password: '1234567'
+                password: '1234567',
+                validCode: '',
+                validCodeReqNo: ''
             },
             loginRules: {
                 username: [{required: true, trigger: 'blur', validator: validateUsername}],
-                password: [{required: true, trigger: 'blur', validator: validatePassword}]
+                password: [{required: true, trigger: 'blur', validator: validatePassword}],
+                validCode: [{required: true, message: '请输入验证码', trigger: 'blur'}],
             },
             loading: false,
             passwordType: 'password',
@@ -96,6 +117,12 @@ export default {
         }
     },
     methods: {
+        refreshCode() {
+            getValidCode().then((response) => {
+                this.validCodeBase64 = response.data.validCodeBase64;
+                this.loginForm.validCodeReqNo = response.data.validCodeReqNo
+            })
+        },
         showPwd() {
             if (this.passwordType === 'password') {
                 this.passwordType = ''
@@ -110,19 +137,24 @@ export default {
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
                     this.loading = true
-
-                    this.$store.dispatch('user/login', this.loginForm).then(() => {
+                    //密码加密
+                    let doEncrypt = smCrypto.doSm2Encrypt(this.loginForm.password);
+                    //深拷贝对象 避免影响到现有form
+                    let params = Lodash.copyObj(this.loginForm)
+                    //设置加密后的密码
+                    params.password = doEncrypt;
+                    this.$store.dispatch('user/login', params).then(() => {
                         this.$router.push({path: this.redirect || '/'})
-                        this.loading = false
-                    }).catch(() => {
+                    }).finally(() => {
                         this.loading = false
                     })
                 } else {
-                    console.log('error submit!!')
                     return false
                 }
             })
         }
+    }, created() {
+        this.refreshCode()
     }
 }
 </script>
@@ -236,6 +268,15 @@ $light_gray: #eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+
+  .validCode-img {
+    border: 1px solid var(--border-color-split);
+    cursor: pointer;
+    width: 30%;
+    height: 40px;
+    margin: 6px 6px;
+    float: right;
   }
 }
 </style>

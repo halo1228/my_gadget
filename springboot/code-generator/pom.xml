@@ -67,7 +67,7 @@
             <artifactId>screw-core</artifactId>
             <version>1.0.5</version>
         </dependency>
-        <!-- HikariCP -->
+        <!-- HikariCP 生成数据库文档-->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
