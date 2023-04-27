@@ -1,5 +1,6 @@
 package com.lg.sys.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,7 +20,6 @@ import com.lg.sys.model.vo.user.UserDetailVO;
 import com.lg.sys.model.vo.user.UserVO;
 import com.lg.sys.service.DeptUserService;
 import com.lg.sys.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -122,7 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>();
         queryWrapper.select(User::getPassword).eq(User::getId, id);
         User one = getOne(queryWrapper);
-        return StringUtils.isNotBlank(newPass) && newPass.equals(one.getPassword());
+        return StrUtil.isNotBlank(newPass) && newPass.equals(one.getPassword());
     }
 
 }

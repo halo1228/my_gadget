@@ -64,20 +64,10 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' , affix: true}
+      meta: {title: 'Dashboard', icon: 'dashboard', affix: true}
     }]
   },
-  {
-    path: '/user',
-    component: Layout,
-    redirect: '/user',
-    children: [{
-      path: 'index',
-      name: 'User',
-      component: () => import('@/views/sys/user'),
-      meta: { title: 'User', icon: 'el-icon-user',keepAlive:true }
-    }]
-  },
+
   {
     path: '/menu',
     component: Layout,
@@ -86,10 +76,10 @@ export const constantRoutes = [
       path: 'index',
       name: 'Menu',
       component: () => import('@/views/sys/menu'),
-      meta: { title: 'Menu', icon: 'el-icon-menu',keepAlive:true }
+      meta: {title: 'Menu', icon: 'el-icon-menu', keepAlive: true}
     }]
   },
-  {
+/*  {
     path: '/dept',
     component: Layout,
     redirect: '/',
@@ -97,33 +87,33 @@ export const constantRoutes = [
       path: 'index',
       name: 'Dept',
       component: () => import('@/views/sys/dept'),
-      meta: { title: 'Dept', icon: 'el-icon-office-building',keepAlive:true }
+      meta: {title: 'Dept', icon: 'el-icon-office-building', keepAlive: true}
     }]
-  },
+  },*/
   {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    meta: {title: 'Example', icon: 'el-icon-s-help'},
     children: [
       {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/example/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        meta: {title: 'Table', icon: 'table'}
       },
       {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/example/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: {title: 'Tree', icon: 'tree'}
       },
       {
         path: 'treeSelect',
         component: () => import('@/views/example/treeSelect/index'),
         name: 'TreeSelect',
-        meta: { title: 'treeSelect', icon: 'tree' }
+        meta: {title: 'treeSelect', icon: 'tree'}
       }
     ]
   },
@@ -136,7 +126,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        meta: {title: 'Form', icon: 'form'}
       }
     ]
   },
@@ -154,31 +144,31 @@ export const constantRoutes = [
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: 'Menu1' },
+        meta: {title: 'Menu1'},
         children: [
           {
             path: 'menu1-1',
             component: () => import('@/views/nested/menu1/menu1-1'),
             name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
+            meta: {title: 'Menu1-1'}
           },
           {
             path: 'menu1-2',
             component: () => import('@/views/nested/menu1/menu1-2'),
             name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
+            meta: {title: 'Menu1-2'},
             children: [
               {
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
                 name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
+                meta: {title: 'Menu1-2-1'}
               },
               {
                 path: 'menu1-2-2',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
                 name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
+                meta: {title: 'Menu1-2-2'}
               }
             ]
           },
@@ -186,7 +176,7 @@ export const constantRoutes = [
             path: 'menu1-3',
             component: () => import('@/views/nested/menu1/menu1-3'),
             name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
+            meta: {title: 'Menu1-3'}
           }
         ]
       },
@@ -194,45 +184,64 @@ export const constantRoutes = [
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
-        meta: { title: 'menu2' }
+        meta: {title: 'menu2'}
       }
     ]
   },
-
+  {
+    path: '/system',
+    component: Layout,
+    name: 'System',
+    meta: {
+      title: 'system',
+      icon: 'dashboard'
+    },
+    children: [
+      {
+        name: 'Druid',
+        path: `${process.env.VUE_APP_BASE_DOMAIN}/druid/index.html`,
+        meta: {title: 'druid', icon: 'el-icon-coin'}
+      },
+      {
+        name: 'Swagger',
+        path: `${process.env.VUE_APP_BASE_DOMAIN}/doc.html`,
+        meta: {title: 'swagger', icon: 'el-icon-notebook-1'}
+      },
+    ]
+  },
   {
     path: 'external-link',
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: `${process.env.VUE_APP_BASE_DOMAIN}/doc.html`,
+        meta: {title: 'External Link', icon: 'link'}
       }
     ]
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+ // {path: '*', redirect: '/404', hidden: true}
 ]
 
 /**
  * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
+ * 需要根据用户角色动态加载的路由
  */
 export const asyncRoutes = [
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  //{path: '*', redirect: '/404', hidden: true}
 ]
 
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   mode: 'hash',
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 
 const router = createRouter()
-
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()

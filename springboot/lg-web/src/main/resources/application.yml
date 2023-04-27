@@ -7,12 +7,12 @@ server:
     # tomcat的URI编码
     uri-encoding: UTF-8
     # 连接数满后的排队数，默认为100
-    accept-count: 1000
+    accept-count: 100
     threads:
       # tomcat最大线程数，默认为200
-      max: 800
+      max: 200
       # Tomcat启动初始化的线程数，默认值10
-      min-spare: 100
+      min-spare: 10
 
 # 数据源配置
 spring:
@@ -21,11 +21,29 @@ spring:
       matching-strategy: ant_path_matcher #swwagger
   # 数据源配置
   datasource:
+    # @DS 可以注解在方法上和类上，同时存在方法注解优先于类上注解,强烈建议注解在service实现或mapper接口方法上
+    dynamic:
+      # 默认数据源，默认master
+      primary: master
+      # 严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      strict: false
+      # 数据库连接信息配置
+      datasource:
+        # 主库
+        master:
+          url: jdbc:mysql://127.0.0.1:3306/my_gadget?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=true&characterEncoding=UTF-8
+          username: root
+          password: 123456
+        # 从库
+        slave:
+          url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=true&characterEncoding=UTF-8
+          username: root
+          password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/my_gadget?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    #url: jdbc:mysql://localhost:3306/my_gadget?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    #username: root
+    #password: 123456
     druid:
       # 初始连接数
       initialSize: 5
@@ -48,6 +66,10 @@ spring:
       testOnReturn: false
       webStatFilter:
         enabled: true
+        url-pattern: /*                 # 过滤所有url
+        exclusions: "/druid/*" # 排除一些不必要的url
+        session-stat-enable: true       # 开启session统计功能
+        session-stat-max-count: 1000    # session的最大个数,默认100
       statViewServlet:
         enabled: true
         # 设置白名单，不填则允许所有访问
@@ -56,16 +78,23 @@ spring:
         # 控制台管理用户名和密码
         login-username: admin
         login-password: 123456
+        reset-enable: false  #是否启用重置按钮
       filter:
+        #配置StatFilter (SQL监控配置)
         stat:
           enabled: true
           # 慢SQL记录
-          log-slow-sql: true
+          log-slow-sql: true # 开启慢SQL记录功能
           slow-sql-millis: 1000
           merge-sql: true
+        #配置WallFilter (防火墙配置)
         wall:
+          enabled: true
           config:
             multi-statement-allow: true
+            drop-table-allow: false                                                   #禁止删表操作
+      aop-patterns: "com.lg.*"
+
   # Redis 配置
   redis:
     # Redis 服务器地址
@@ -119,3 +148,9 @@ sa-token:
   is-log: true
 swagger:
   enabled: true #swagger 开启
+
+# mica-xss防止Xss攻击
+#mica:
+#  xss:
+#    enabled: false
+#    path-patterns: /**

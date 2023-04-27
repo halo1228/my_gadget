@@ -1,15 +1,12 @@
 package com.lg.sys.service.impl;
 
-import com.lg.sys.model.entity.DeptUser;
-import com.lg.sys.mapper.DeptUserMapper;
-import com.lg.sys.service.DeptUserService;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
+import com.lg.sys.mapper.DeptUserMapper;
+import com.lg.sys.model.entity.DeptUser;
+import com.lg.sys.service.DeptUserService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
 
@@ -30,7 +27,7 @@ public class DeptUserServiceImpl extends ServiceImpl<DeptUserMapper, DeptUser> i
     @Override
     public boolean updateBind(DeptUser deptUser) {
         boolean update = false;
-        if (StringUtils.isNotBlank(deptUser.getId())) {
+        if (StrUtil.isNotBlank(deptUser.getId())) {
             //根据id修改
             update = updateById(deptUser);
         } else {

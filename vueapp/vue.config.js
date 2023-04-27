@@ -39,7 +39,7 @@ module.exports = {
     //before: require('./mock/mock-server.js'),
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        target: "http://localhost:8080",    // 请求的第三方接口地址
+        target: process.env.VUE_APP_BASE_DOMAIN,    // 请求的第三方接口地址
         ws: true,
         changeOrigin: true,                // 请求跨域时，需配置此项
         pathRewrite: {                     // 路径重写,替换target中的请求地址

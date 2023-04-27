@@ -1,5 +1,6 @@
 package com.lg.config;
 
+import com.alibaba.druid.filter.config.ConfigTools;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.alibaba.druid.spring.boot.autoconfigure.properties.DruidStatProperties;
 import com.alibaba.druid.util.Utils;
@@ -72,4 +73,33 @@ public class DruidAdConfig {
         registrationBean.addUrlPatterns(commonJsPattern);
         return registrationBean;
     }
+
+    /**
+     * 配置文件中数据库密码加密
+     * @param args
+     * @throws Exception
+     */
+    public static void main(String[] args) throws Exception{
+        //密码明文
+        String password = "123456";
+        System.out.println("明文密码: " + password);
+//        // 获取密钥
+        String[] keyPair = ConfigTools.genKeyPair(512);
+        //私钥
+        String privateKey = keyPair[0];
+//        String privateKey = "MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAoJVSCPpJiAwR9JPpBqK4YQLeLZfS2UUvFwp7XwYVhNhqzguFH6EL7oUjIahrSYlwDRTAZozHF6EcNyj5YcM90QIDAQABAkBcCNiojpJAJ/LOg0tF41LbPuKJrP9KSS2Q/g/xSTJiHSAUxH/iSUMtd6xxTZ9sm3Wgul12fIqmFWOv+fPx7gdFAiEA7BzX3qir3hVfASTExJ1s4hsw3LjY71s6evESR/i/IfcCIQCuG+HPpxaet1FDKo9dWUaZIoF6WEFr/bGjEhMYTIwsdwIhALL2YcDIxAw+0pXBUstcL01qIq0KBpPV6AuLcbnPlr+dAiEAl4m7C7JhVLk3aF9VsqjucoB+8053epevkcA8kGynoFcCIQDhiTKseiMkkjIvxtFCYWbS9ZQNBKjuGBspS4sRJ4IOhg==";
+        //公钥
+        String publicKey = keyPair[1];
+//        String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKCVUgj6SYgMEfST6QaiuGEC3i2X0tlFLxcKe18GFYTYas4LhR+hC+6FIyGoa0mJcA0UwGaMxxehHDco+WHDPdECAwEAAQ==";
+        System.out.println("privateKey（私钥）:" + privateKey);
+        System.out.println("publicKey（公钥）:" + publicKey);
+
+        //用私钥加密后的密文
+        String encryptPassword = ConfigTools.encrypt(privateKey, password);
+        System.out.println("用私钥加密后的密文:" + encryptPassword);
+        String decryptPassword = ConfigTools.decrypt(publicKey, encryptPassword);
+        System.out.println("解密后:" + decryptPassword);
+    }
+
+
 }

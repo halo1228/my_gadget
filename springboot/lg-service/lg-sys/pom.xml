@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.lg</groupId>
-        <artifactId>springboot</artifactId>
+        <artifactId>lg-service</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>lg-sys</artifactId>
+    <description>系统管理模块</description>
     <!--统一编码和JAVA版本-->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,10 +25,6 @@
             <artifactId>lg-common</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>

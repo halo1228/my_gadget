@@ -1,6 +1,6 @@
 package com.lg.common.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.ObjectUtil;
 
 import java.util.regex.Pattern;
 
@@ -82,7 +82,7 @@ public class ValidateUtil {
      * @Description: 验证手机号码格式
      */
     public static boolean validateMobile(String mobile) {
-        if (StringUtils.isEmpty(mobile)) {
+        if (ObjectUtil.isEmpty(mobile)) {
             return Boolean.FALSE;
         }
         return mobile.matches(MOBILE_PATTERN);
@@ -95,7 +95,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateTelecom(String mobile) {
-        if (StringUtils.isEmpty(mobile)) {
+        if (ObjectUtil.isEmpty(mobile)) {
             return Boolean.FALSE;
         }
         return mobile.matches(CHINA_TELECOM_PATTERN);
@@ -108,7 +108,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateUnionMobile(String mobile) {
-        if (StringUtils.isEmpty(mobile)) {
+        if (ObjectUtil.isEmpty(mobile)) {
             return Boolean.FALSE;
         }
         return mobile.matches(CHINA_UNICOM_PATTERN);
@@ -121,7 +121,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateMoveMobile(String mobile) {
-        if (StringUtils.isEmpty(mobile)) {
+        if (ObjectUtil.isEmpty(mobile)) {
             return Boolean.FALSE;
         }
         return mobile.matches(CHINA_MOVE_PATTERN);
@@ -133,7 +133,7 @@ public class ValidateUtil {
      * @Description: 验证密码格式  6-16 位字母、数字
      */
     public static boolean validatePwd(String pwd) {
-        if (StringUtils.isEmpty(pwd)) {
+        if (ObjectUtil.isEmpty(pwd)) {
             return Boolean.FALSE;
         }
         return Pattern.matches(PASSWORD_PATTERN, pwd);
@@ -146,7 +146,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateLandLine(final String landline) {
-        if (StringUtils.isEmpty(landline)) {
+        if (ObjectUtil.isEmpty(landline)) {
             return Boolean.FALSE;
         }
         return landline.matches(LANDLINE_PATTERN);
@@ -159,7 +159,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validatePostCode(final String postCode) {
-        if (StringUtils.isEmpty(postCode)) {
+        if (ObjectUtil.isEmpty(postCode)) {
             return Boolean.FALSE;
         }
         return postCode.matches(POSTCODE_PATTERN);
@@ -172,7 +172,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateEamil(final String email) {
-        if (StringUtils.isEmpty(email)) {
+        if (ObjectUtil.isEmpty(email)) {
             return Boolean.FALSE;
         }
         return email.matches(EMAIL_PATTERN);
@@ -185,7 +185,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateAge(final String age) {
-        if (StringUtils.isEmpty(age)) {
+        if (ObjectUtil.isEmpty(age)) {
             return Boolean.FALSE;
         }
         return age.matches(AGE_PATTERN);
@@ -198,7 +198,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateIDCard(final String idCard) {
-        if (StringUtils.isEmpty(idCard)) {
+        if (ObjectUtil.isEmpty(idCard)) {
             return Boolean.FALSE;
         }
         return idCard.matches(IDCARD_PATTERN);
@@ -211,7 +211,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateUrl(final String url) {
-        if (StringUtils.isEmpty(url)) {
+        if (ObjectUtil.isEmpty(url)) {
             return Boolean.FALSE;
         }
         return url.matches(URL_PATTERN);
@@ -224,7 +224,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateQq(final String qq) {
-        if (StringUtils.isEmpty(qq)) {
+        if (ObjectUtil.isEmpty(qq)) {
             return Boolean.FALSE;
         }
         return qq.matches(QQ_PATTERN);
@@ -237,7 +237,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateChinese(final String str) {
-        if (StringUtils.isEmpty(str)) {
+        if (ObjectUtil.isEmpty(str)) {
             return Boolean.FALSE;
         }
         return str.matches(CHINESE_PATTERN);
@@ -250,7 +250,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateStrEnglish(final String str) {
-        if (StringUtils.isEmpty(str)) {
+        if (ObjectUtil.isEmpty(str)) {
             return Boolean.FALSE;
         }
         return str.matches(STR_ENG_PATTERN);
@@ -263,7 +263,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validateInteger(final String str) {
-        if (StringUtils.isEmpty(str)) {
+        if (ObjectUtil.isEmpty(str)) {
             return Boolean.FALSE;
         }
         return str.matches(INTEGER_PATTERN);
@@ -276,7 +276,7 @@ public class ValidateUtil {
      * @return boolean
      */
     public static boolean validatePositiveInt(final String str) {
-        if (StringUtils.isEmpty(str)) {
+        if (ObjectUtil.isEmpty(str)) {
             return Boolean.FALSE;
         }
         return str.matches(POSITIVE_INTEGER_PATTERN);

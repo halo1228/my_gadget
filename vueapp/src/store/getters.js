@@ -6,5 +6,7 @@ const getters = {
   name: state => state.user.name,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
+// 动态路由
+  permission_routes: state => state.permission.routes
 }
 export default getters

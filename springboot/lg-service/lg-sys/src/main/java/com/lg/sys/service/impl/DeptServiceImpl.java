@@ -3,18 +3,18 @@ package com.lg.sys.service.impl;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lg.common.utils.PageUtil;
+import com.lg.sys.mapper.DeptMapper;
 import com.lg.sys.model.converter.DeptConverter;
 import com.lg.sys.model.dto.dept.DeptAddDTO;
 import com.lg.sys.model.dto.dept.DeptEditDTO;
-import com.lg.sys.model.entity.Dept;
-import com.lg.sys.mapper.DeptMapper;
 import com.lg.sys.model.dto.dept.DeptPageDTO;
+import com.lg.sys.model.entity.Dept;
 import com.lg.sys.service.DeptService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,17 +35,17 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     public Page<Dept> getPage(DeptPageDTO deptPageDto) {
         LambdaQueryWrapper<Dept> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper
-                .likeRight(StringUtils.isNotBlank(deptPageDto.getDeptName()), Dept::getDeptName, deptPageDto.getDeptName())
-                .eq(StringUtils.isNotBlank(deptPageDto.getParentId()), Dept::getParentId, deptPageDto.getParentId())
+                .likeRight(StrUtil.isNotBlank(deptPageDto.getDeptName()), Dept::getDeptName, deptPageDto.getDeptName())
+                .eq(StrUtil.isNotBlank(deptPageDto.getParentId()), Dept::getParentId, deptPageDto.getParentId())
                 .or()
-                .eq(StringUtils.isNotBlank(deptPageDto.getParentId()), Dept::getId, deptPageDto.getParentId());
+                .eq(StrUtil.isNotBlank(deptPageDto.getParentId()), Dept::getId, deptPageDto.getParentId());
         return page(PageUtil.defaultPage(deptPageDto.getSize(), deptPageDto.getCurrent()), queryWrapper);
     }
 
     @Override
     public boolean add(DeptAddDTO deptAddDto) {
         Dept dept = DeptConverter.INSTANCE.deptAddDTO2Dept(deptAddDto);
-        if (StringUtils.isBlank(dept.getParentId())) {
+        if (StrUtil.isBlank(dept.getParentId())) {
             //默认顶级组织id为0
             dept.setParentId("0");
         }
@@ -60,7 +60,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
 
     @Override
     public List<Tree<String>> lazyTree(String pId) {
-        if (StringUtils.isBlank(pId)) {
+        if (StrUtil.isBlank(pId)) {
             pId = "root";
         }
         LambdaQueryWrapper<Dept> queryWrapper = new LambdaQueryWrapper<>();

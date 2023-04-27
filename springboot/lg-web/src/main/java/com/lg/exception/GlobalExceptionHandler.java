@@ -7,8 +7,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ConstraintViolationException;
-
 /**
  * @author liuga
  * @date 2023/01/14 11:16
@@ -19,8 +17,7 @@ public class GlobalExceptionHandler {
 
     // 拦截：未登录异常
     @ExceptionHandler(NotLoginException.class)
-    public ApiResult<?> handlerNotLoginException(NotLoginException nle)
-            throws Exception {
+    public ApiResult<?> handlerNotLoginException(NotLoginException nle) {
 
         // 打印堆栈，以供调试
         // nle.printStackTrace();

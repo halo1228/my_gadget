@@ -23,16 +23,19 @@ export function logout() {
   })
 }
 
-export function getAuthMenu(token) {
+export function getRoutes(token) {
   return request({
-    url: '/router',
+    url: '/auth/router',
     method: 'get',
     params: { token }
   })
 }
+
 export  function  getValidCode() {
   return request({
     url: '/code/validCode',
     method: 'get',
   })
 }
+
+
